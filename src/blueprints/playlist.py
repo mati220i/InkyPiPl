@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import os
 import logging
 from utils.app_utils import resolve_path, handle_request_files, parse_form
+from utils.locale_utils import t
 
 
 logger = logging.getLogger(__name__)
@@ -15,6 +16,7 @@ def add_plugin():
     device_config = current_app.config['DEVICE_CONFIG']
     refresh_task = current_app.config['REFRESH_TASK']
     playlist_manager = device_config.get_playlist_manager()
+    lang = device_config.config.get("language", "en")
 
     try:
         plugin_settings = parse_form(request.form)
@@ -24,31 +26,31 @@ def add_plugin():
         playlist = refresh_settings.get('playlist')
         instance_name = refresh_settings.get('instance_name')
         if not playlist:
-            return jsonify({"error": "Playlist name is required"}), 400
+            return jsonify({"error": t("playlist_name_required", lang)}), 400
         if not instance_name or not instance_name.strip():
-            return jsonify({"error": "Instance name is required"}), 400
+            return jsonify({"error": t("instance_name_required", lang)}), 400
         if not all(char.isalpha() or char.isspace() or char.isnumeric() for char in instance_name):
-            return jsonify({"error": "Instance name can only contain alphanumeric characters and spaces"}), 400
+            return jsonify({"error": t("invalid_instance_name", lang)}), 400
         refresh_type = refresh_settings.get('refreshType')
         if not refresh_type or refresh_type not in ["interval", "scheduled"]:
-            return jsonify({"error": "Refresh type is required"}), 400
+            return jsonify({"error": t("refresh_type_required", lang)}), 400
 
         existing = playlist_manager.find_plugin(plugin_id, instance_name)
         if existing:
-            return jsonify({"error": f"Plugin instance '{instance_name}' already exists"}), 400
+            return jsonify({"error": t("playlist_exists", lang, name=instance_name)}), 400
 
         if refresh_type == "interval":
             unit, interval = refresh_settings.get('unit'), refresh_settings.get("interval")
             if not unit or unit not in ["minute", "hour", "day"]:
-                return jsonify({"error": "Refresh interval unit is required"}), 400
+                return jsonify({"error": t("refresh_interval_unit_required", lang)}), 400
             if not interval:
-                return jsonify({"error": "Refresh interval is required"}), 400
+                return jsonify({"error": t("refresh_interval_required", lang)}), 400
             refresh_interval_seconds = calculate_seconds(int(interval), unit)
             refresh_config = {"interval": refresh_interval_seconds}
         else:
             refresh_time = refresh_settings.get('refreshTime')
             if not refresh_settings.get('refreshTime'):
-                return jsonify({"error": "Refresh time is required"}), 400
+                return jsonify({"error": t("refresh_time_required", lang)}), 400
             refresh_config = {"scheduled": refresh_time}
 
         plugin_settings.update(handle_request_files(request.files))
@@ -60,12 +62,12 @@ def add_plugin():
         }
         result = playlist_manager.add_plugin_to_playlist(playlist, plugin_dict)
         if not result:
-            return jsonify({"error": "Failed to add to playlist"}), 500
+            return jsonify({"error": t("failed_add_playlist", lang)}), 500
 
         device_config.write_config()
     except Exception as e:
-        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-    return jsonify({"success": True, "message": "Scheduled refresh configured."})
+        return jsonify({"error": t("error_occurred", lang, e=str(e))}), 500
+    return jsonify({"success": True, "message": t("scheduled_refresh_configured", lang)})
 
 @playlist_bp.route('/playlist')
 def playlists():
@@ -89,28 +91,30 @@ def create_playlist():
     start_time = data.get("start_time")
     end_time = data.get("end_time")
 
+    lang = device_config.config.get("language", "en")
+
     if not playlist_name or not playlist_name.strip():
-        return jsonify({"error": "Playlist name is required"}), 400
+        return jsonify({"error": t("playlist_name_required", lang)}), 400
     if not start_time or not end_time:
-        return jsonify({"error": "Start time and End time are required"}), 400
+        return jsonify({"error": t("start_and_end_time_required", lang)}), 400
 
     try:
         playlist = playlist_manager.get_playlist(playlist_name)
         if playlist:
-            return jsonify({"error": f"Playlist with name '{playlist_name}' already exists"}), 400
+            return jsonify({"error": t("playlist_exists", lang, name=playlist_name)}), 400
 
         result = playlist_manager.add_playlist(playlist_name, start_time, end_time)
         if not result:
-            return jsonify({"error": "Failed to create playlist"}), 500
+            return jsonify({"error": t("failed_to_create_playlist", lang)}), 500
 
         # save changes to device config file
         device_config.write_config()
 
     except Exception as e:
         logger.exception("EXCEPTION CAUGHT: " + str(e))
-        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+        return jsonify({"error": t("error_occurred", lang, name=str(e))}), 500
 
-    return jsonify({"success": True, "message": "Created new Playlist!"})
+    return jsonify({"success": True, "message": t("failed_to_create_playlist", lang)})
 
 
 @playlist_bp.route('/update_playlist/<string:playlist_name>', methods=['PUT'])
@@ -123,31 +127,36 @@ def update_playlist(playlist_name):
     new_name = data.get("new_name")
     start_time = data.get("start_time")
     end_time = data.get("end_time")
+
+    lang = device_config.config.get("language", "en")
+
     if not new_name or not start_time or not end_time:
-        return jsonify({"success": False, "error": "Missing required fields"}), 400
+        return jsonify({"success": False, "error": t("missing_required_fields", lang)}), 400
 
     playlist = playlist_manager.get_playlist(playlist_name)
     if not playlist:
-        return jsonify({"error": f"Playlist '{playlist_name}' does not exist"}), 400
+        return jsonify({"error": t("playlist_doesnt_exists", lang, playlist_name=playlist_name)}), 400
 
     result = playlist_manager.update_playlist(playlist_name, new_name, start_time, end_time)
     if not result:
-        return jsonify({"error": "Failed to delete playlist"}), 500
+        return jsonify({"error": t("failed_to_delete_playlist", lang)}), 500
     device_config.write_config()
 
-    return jsonify({"success": True, "message": f"Updated playlist '{playlist_name}'!"})
+    return jsonify({"success": True, "message": t("updated_playlist", lang, playlist_name=playlist_name)})
 
 @playlist_bp.route('/delete_playlist/<string:playlist_name>', methods=['DELETE'])
 def delete_playlist(playlist_name):
     device_config = current_app.config['DEVICE_CONFIG']
     playlist_manager = device_config.get_playlist_manager()
 
+    lang = device_config.config.get("language", "en")
+
     if not playlist_name:
-        return jsonify({"error": f"Playlist name is required"}), 400
+        return jsonify({"error": t("playlist_name_required", lang)}), 400
 
     playlist = playlist_manager.get_playlist(playlist_name)
     if not playlist:
-        return jsonify({"error": f"Playlist '{playlist_name}' does not exist"}), 400
+        return jsonify({"error": t("playlist_doesnt_exists", lang, playlist_name=playlist_name)}), 400
 
     # Delete all images associated with plugin instances in this playlist
     from blueprints.plugin import _delete_plugin_instance_images
@@ -157,10 +166,13 @@ def delete_playlist(playlist_name):
     playlist_manager.delete_playlist(playlist_name)
     device_config.write_config()
 
-    return jsonify({"success": True, "message": f"Deleted playlist '{playlist_name}'!"})
+    return jsonify({"success": True, "message": t("deleted_playlist", lang, playlist_name=playlist_name)})
 
 @playlist_bp.app_template_filter('format_relative_time')
 def format_relative_time(iso_date_string):
+    device_config = current_app.config['DEVICE_CONFIG']
+    lang = device_config.config.get("language", "en")
+
     # Parse the input ISO date string
     dt = datetime.fromisoformat(iso_date_string)
 
@@ -182,12 +194,17 @@ def format_relative_time(iso_date_string):
 
     # Determine relative time string
     if diff_seconds < 120:
-        return "just now"
+        return t("just_now", lang)
     elif diff_minutes < 60:
-        return f"{int(diff_minutes)} minutes ago"
+        return t("minutes_ago", lang, n=int(diff_minutes))
     elif dt.date() == now.date():
-        return "today at " + dt.strftime(time_format).lstrip("0")
+        return t("today_at", lang, time=dt.strftime(time_format).lstrip("0"))
     elif dt.date() == (now.date() - timedelta(days=1)):
-        return "yesterday at " + dt.strftime(time_format).lstrip("0")
+        return t("yesterday_at", lang, time=dt.strftime(time_format).lstrip("0"))
     else:
-        return dt.strftime(month_day_format).replace(" 0", " ")  # Removes leading zero in day
+        return t(
+            "month_day_at",
+            lang,
+            date=dt.strftime(month_day_format).lstrip("0"),
+            time=dt.strftime(time_format).lstrip("0")
+        )  # Removes leading zero in day

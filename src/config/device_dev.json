@@ -2,5 +2,6 @@
     "name": "InkyPi Development",
     "display_type": "mock",
     "resolution": [800, 480],
-    "orientation": "horizontal"
+    "orientation": "horizontal",
+    "language": "pl"
 }
