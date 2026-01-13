@@ -16,7 +16,7 @@ def add_plugin():
     device_config = current_app.config['DEVICE_CONFIG']
     refresh_task = current_app.config['REFRESH_TASK']
     playlist_manager = device_config.get_playlist_manager()
-    lang = device_config.config.get("language", "en")
+    lang = device_config.config.get("language", "pl")
 
     try:
         plugin_settings = parse_form(request.form)
@@ -91,7 +91,7 @@ def create_playlist():
     start_time = data.get("start_time")
     end_time = data.get("end_time")
 
-    lang = device_config.config.get("language", "en")
+    lang = device_config.config.get("language", "pl")
 
     if not playlist_name or not playlist_name.strip():
         return jsonify({"error": t("playlist_name_required", lang)}), 400
@@ -128,7 +128,7 @@ def update_playlist(playlist_name):
     start_time = data.get("start_time")
     end_time = data.get("end_time")
 
-    lang = device_config.config.get("language", "en")
+    lang = device_config.config.get("language", "pl")
 
     if not new_name or not start_time or not end_time:
         return jsonify({"success": False, "error": t("missing_required_fields", lang)}), 400
@@ -149,7 +149,7 @@ def delete_playlist(playlist_name):
     device_config = current_app.config['DEVICE_CONFIG']
     playlist_manager = device_config.get_playlist_manager()
 
-    lang = device_config.config.get("language", "en")
+    lang = device_config.config.get("language", "pl")
 
     if not playlist_name:
         return jsonify({"error": t("playlist_name_required", lang)}), 400
@@ -171,7 +171,7 @@ def delete_playlist(playlist_name):
 @playlist_bp.app_template_filter('format_relative_time')
 def format_relative_time(iso_date_string):
     device_config = current_app.config['DEVICE_CONFIG']
-    lang = device_config.config.get("language", "en")
+    lang = device_config.config.get("language", "pl")
 
     # Parse the input ISO date string
     dt = datetime.fromisoformat(iso_date_string)
