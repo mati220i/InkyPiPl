@@ -2,90 +2,90 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 <div class="form-group">
-    <label class="form-label">Location: </label>
+    <label class="form-label">Lokalizacja: </label>
     <div class="form-group">
-        <span>Latitude </span>
+        <span>Szerokość </span>
         <input readonly type="text" id="latitude" name="latitude" class="form-input" />
     </div>
     <div class="form-group">
-        <span>Longitude </span>
+        <span>Długość </span>
         <input readonly type="text" id="longitude" name="longitude" class="form-input" />
     </div>
-    <button type="button" id="openMap" class="action-button compact">Select Location</button>
+    <button type="button" id="openMap" class="action-button compact">Wybierz Lokalizację</button>
 </div>
 
 <div class="form-group">
-    <label for="weatherProvider" class="form-label">Weather Provider:</label>
+    <label for="weatherProvider" class="form-label">Dostawca Pogody:</label>
     <select id="weatherProvider" name="weatherProvider" class="form-input" onchange="updateTitleOptions(this.value)">
         <option value="OpenMeteo">Open-Meteo</option>
         <option value="OpenWeatherMap">OpenWeatherMap</option>
     </select>
 
-    <label for="units" class="form-label">Units:</label>
+    <label for="units" class="form-label">Jednostki:</label>
     <select id="units" name="units" class="form-input">
-        <option value="imperial">Imperial (°F)</option>
-        <option value="metric">Metric (°C)</option>
-        <option value="standard">Standard (K)</option>
+        <option value="imperial">Imperialne (°F)</option>
+        <option value="metric">Metryczne (°C)</option>
+        <option value="standard">Standardowe (K)</option>
     </select>
 </div>
 
 <div class="form-group" id="titleOptionWrapper">
-    <label class="form-label">Title:</label>
+    <label class="form-label">Tytuł:</label>
 
     <div class="form-group">
         <input type="radio" id="title-location" name="titleSelection" value="location">
-        <label for="title-location">Location</label>
+        <label for="title-location">Lokalizacja</label>
 
         <input type="radio" id="title-custom" name="titleSelection" value="custom">
-        <label for="title-custom">Custom</label>
-        <input type="text" id="customTitle" name="customTitle" class="form-input" placeholder="Type something..." />
+        <label for="title-custom">Niestandardowy</label>
+        <input type="text" id="customTitle" name="customTitle" class="form-input" placeholder="Napisz tytuł..." />
     </div>
 </div>
 
 <div class="form-group">
-    <label for="displayMetrics" class="form-label">Display: </label>
+    <label for="displayMetrics" class="form-label">Wyświetl: </label>
 
     <div class="form-group">
       <input type="checkbox" id="displayRefreshTime" name="displayRefreshTime" onclick="this.value=this.checked ? 'true' : 'false';">
-      <span>Refresh Time</span>
+      <span>Czas Odświeżania</span>
     </div>
 
     <div class="form-group">
         <input type="checkbox" id="displayMetrics" name="displayMetrics" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Metrics</span>
+        <span>Metryki</span>
     </div>
 
     <div class="form-group">
         <input type="checkbox" id="displayGraph" name="displayGraph" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Weather Graph</span>
+        <span>Wykres Pogody</span>
     </div>
 
     <div class="form-group">
         <input type="checkbox" id="displayRain" name="displayRain" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Rain Amount</span>
+        <span>Ilość Opadów</span>
     </div>
 
     <div class="form-group">
         <input type="checkbox" id="moonPhase" name="moonPhase" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Moon Phase</span>
+        <span>Fazy Księżyca</span>
     </div>
 
     <div class="form-group">
         <input type="checkbox" id="displayForecast" name="displayForecast" onclick="this.value=this.checked ? 'true' : 'false';">
-        <span>Forecast</span>
+        <span>Pogoda na</span>
         <select id="forecastDays" name="forecastDays" class="form-input">
             <option value=3>3</option>
             <option value=5>5</option>
             <option value=7>7</option>
         </select>
-        <span>days</span>
+        <span>dni</span>
     </div>
 
     <div class="form-group">
-        <label for="weatherTimeZone" class="form-label">Time Zone:</label>
+        <label for="weatherTimeZone" class="form-label">Strefa Czasowa:</label>
         <select id="weatherTimeZone" name="weatherTimeZone" class="form-input">
-            <option value="locationTimeZone">Use Location Time Zone</option>
-            <option value="localTimeZone">Use Local Time Zone</option>
+            <option value="locationTimeZone">Użyj strefy czasowej lokalizacji</option>
+            <option value="localTimeZone">Użyj lokalnej strefy czasowej</option>
         </select>
     </div>
 
@@ -94,10 +94,10 @@
 <div id="mapModal" class="modal">
     <div class="modal-content">
         <span class="close-button" onclick="closeModal('mapModal')">×</span>
-        <h2 id="modalTitle">Select Location</h2>
+        <h2 id="modalTitle">Wybierz Lokalizację</h2>
         <div class="separator"></div>
         <div id="map" style="width: 100%; height: 200px; margin: 10px 0px;"></div>
-        <button id="closeMap" class="action-button">Save</button>
+        <button id="closeMap" class="action-button">Zapisz</button>
     </div>
 </div>
 
@@ -202,7 +202,7 @@
 
 			document.getElementById('displayRain').checked = pluginSettings.displayRain;
             document.getElementById('displayRain').value = pluginSettings.displayRain;
-			
+
             document.getElementById('displayForecast').checked = pluginSettings.displayForecast;
             document.getElementById('displayForecast').value = pluginSettings.displayForecast;
 
@@ -212,7 +212,7 @@
             document.getElementById('moonPhase').value = pluginSettings.moonPhase;
 
             document.getElementById('weatherTimeZone').value = pluginSettings.weatherTimeZone;
-            
+
             selectedTitle = pluginSettings.titleSelection || 'location';
             weatherProvider = pluginSettings.weatherProvider || 'OpenMeteo';
 

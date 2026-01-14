@@ -10,7 +10,7 @@ from io import BytesIO
 import math
 
 logger = logging.getLogger(__name__)
-        
+
 def get_moon_phase_name(phase_age: float) -> str:
     """Determines the name of the lunar phase based on the age of the moon."""
     PHASES_THRESHOLDS = [
@@ -26,7 +26,7 @@ def get_moon_phase_name(phase_age: float) -> str:
 
     for threshold, phase_name in PHASES_THRESHOLDS:
         if phase_age <= threshold:
-            return phase_name  
+            return phase_name
     return "newmoon"
 
 UNITS = {
@@ -72,24 +72,24 @@ class Weather(BasePlugin):
         lat = float(settings.get('latitude'))
         long = float(settings.get('longitude'))
         if not lat or not long:
-            raise RuntimeError("Latitude and Longitude are required.")
+            raise RuntimeError("Szerokość i długość są wymagane.")
 
         units = settings.get('units')
         if not units or units not in ['metric', 'imperial', 'standard']:
-            raise RuntimeError("Units are required.")
+            raise RuntimeError("Jednostki są wymagane.")
 
         weather_provider = settings.get('weatherProvider', 'OpenWeatherMap')
         title = settings.get('customTitle', '')
 
         timezone = device_config.get_config("timezone", default="America/New_York")
-        time_format = device_config.get_config("time_format", default="12h")
+        time_format = device_config.get_config("time_format", default="24h")
         tz = pytz.timezone(timezone)
 
         try:
             if weather_provider == "OpenWeatherMap":
                 api_key = device_config.load_env_key("OPEN_WEATHER_MAP_SECRET")
                 if not api_key:
-                    raise RuntimeError("Open Weather Map API Key not configured.")
+                    raise RuntimeError("Klucz Open Weather Map API nie jest skonfigurowany.")
                 weather_data = self.get_weather_data(api_key, units, lat, long)
                 aqi_data = self.get_air_quality(api_key, lat, long)
                 if settings.get('titleSelection', 'location') == 'location':
@@ -107,13 +107,13 @@ class Weather(BasePlugin):
                 aqi_data = self.get_open_meteo_air_quality(lat, long)
                 template_params = self.parse_open_meteo_data(weather_data, aqi_data, tz, units, time_format, lat)
             else:
-                raise RuntimeError(f"Unknown weather provider: {weather_provider}")
+                raise RuntimeError(f"Nieznany dostawca pogody: {weather_provider}")
 
             template_params['title'] = title
         except Exception as e:
             logger.error(f"{weather_provider} request failed: {str(e)}")
             raise RuntimeError(f"{weather_provider} request failure, please check logs.")
-       
+
         dimensions = device_config.get_resolution()
         if device_config.get_config("orientation") == "vertical":
             dimensions = dimensions[::-1]
@@ -131,7 +131,7 @@ class Weather(BasePlugin):
         image = self.render_image(dimensions, "weather.html", "weather.css", template_params)
 
         if not image:
-            raise RuntimeError("Failed to take screenshot, please check logs.")
+            raise RuntimeError("Problem ze zrobieniem screenshota, proszę sprawdź logi.")
         return image
 
     def parse_weather_data(self, weather_data, aqi_data, tz, units, time_format, lat):
@@ -179,14 +179,14 @@ class Weather(BasePlugin):
 
         data['forecast'] = self.parse_open_meteo_forecast(weather_data.get('daily', {}), tz, is_day, lat)
         data['data_points'] = self.parse_open_meteo_data_points(weather_data, aqi_data, tz, units, time_format)
-        
+
         data['hourly_forecast'] = self.parse_open_meteo_hourly(weather_data.get('hourly', {}), tz, time_format)
         return data
 
     def map_weather_code_to_icon(self, weather_code, is_day):
 
         icon = "01d" # Default to clear day icon
-        
+
         if weather_code in [0]:   # Clear sky
             icon = "01d"
         elif weather_code in [1]: # Mainly clear
@@ -196,19 +196,19 @@ class Weather(BasePlugin):
         elif weather_code in [3]: # Overcast
             icon = "04d"
         elif weather_code in [51, 61, 80]: # Drizzle, showers, rain: Light
-            icon = "51d"          
+            icon = "51d"
         elif weather_code in [53, 63, 81]: # Drizzle, showers, rain: Moderatr
             icon = "53d"
         elif weather_code in [55, 65, 82]: # Drizzle, showers, rain: Heavy
             icon = "09d"
         elif weather_code in [45]: # Fog
-            icon = "50d"                       
+            icon = "50d"
         elif weather_code in [48]: # Icy fog
             icon = "48d"
         elif weather_code in [56, 66]: # Light freezing Drizzle
-            icon = "56d"            
+            icon = "56d"
         elif weather_code in [57, 67]: # Freezing Drizzle
-            icon = "57d"            
+            icon = "57d"
         elif weather_code in [71, 85]: # Snow fall: Slight
             icon = "71d"
         elif weather_code in [73]:     # Snow fall: Moderate
@@ -228,7 +228,7 @@ class Weather(BasePlugin):
             elif icon == "022d":
                 icon = "022n"     # Mainly clear night
             elif icon == "02d":
-                icon = "02n"      # Partly cloudy night                
+                icon = "02n"      # Partly cloudy night
             elif icon == "10d":
                 icon = "10n"      # Rain night
 
@@ -250,7 +250,7 @@ class Weather(BasePlugin):
                 phase_name = "lastquarter"
             elif phase_name == "lastquarter":
                 phase_name = "firstquarter"
-        
+
         return self.get_plugin_dir(f"icons/{phase_name}.png")
 
     def parse_forecast(self, daily_forecast, tz, current_suffix, lat):
@@ -317,7 +317,7 @@ class Weather(BasePlugin):
             )
 
         return forecast
-        
+
     def parse_open_meteo_forecast(self, daily_data, tz, is_day, lat):
         """
         Parse the daily forecast from Open-Meteo API and calculate moon phase and illumination using the local 'astral' library.
@@ -329,7 +329,7 @@ class Weather(BasePlugin):
 
         forecast = []
 
-        for i in range(0, len(times)): 
+        for i in range(0, len(times)):
             dt = datetime.fromisoformat(times[i]).replace(tzinfo=timezone.utc).astimezone(tz)
             day_label = dt.strftime("%a")
 
@@ -339,7 +339,7 @@ class Weather(BasePlugin):
 
             timestamp = int(dt.replace(hour=12, minute=0, second=0).timestamp())
             target_date: date = dt.date() + timedelta(days=1)
-           
+
             try:
                 phase_age = moon.phase(target_date)
                 phase_name_north_hemi = get_moon_phase_name(phase_age)
@@ -371,7 +371,7 @@ class Weather(BasePlugin):
             if units == "imperial":
                 rain = rain_mm / 25.4
             else:
-                rain = rain_mm 
+                rain = rain_mm
             hour_forecast = {
                 "time": self.format_time(dt, time_format, hour_only=True),
                 "temperature": int(hour.get("temp")),
@@ -424,7 +424,7 @@ class Weather(BasePlugin):
         if sunrise_epoch:
             sunrise_dt = datetime.fromtimestamp(sunrise_epoch, tz=timezone.utc).astimezone(tz)
             data_points.append({
-                "label": "Sunrise",
+                "label": "Wschód",
                 "measurement": self.format_time(sunrise_dt, time_format, include_am_pm=False),
                 "unit": "" if time_format == "24h" else sunrise_dt.strftime('%p'),
                 "icon": self.get_plugin_dir('icons/sunrise.png')
@@ -436,7 +436,7 @@ class Weather(BasePlugin):
         if sunset_epoch:
             sunset_dt = datetime.fromtimestamp(sunset_epoch, tz=timezone.utc).astimezone(tz)
             data_points.append({
-                "label": "Sunset",
+                "label": "Zachód",
                 "measurement": self.format_time(sunset_dt, time_format, include_am_pm=False),
                 "unit": "" if time_format == "24h" else sunset_dt.strftime('%p'),
                 "icon": self.get_plugin_dir('icons/sunset.png')
@@ -447,7 +447,7 @@ class Weather(BasePlugin):
         wind_deg = weather.get('current', {}).get("wind_deg", 0)
         wind_arrow = self.get_wind_arrow(wind_deg)
         data_points.append({
-            "label": "Wind",
+            "label": "Wiatr",
             "measurement": weather.get('current', {}).get("wind_speed"),
             "unit": UNITS[units]["speed"],
             "icon": self.get_plugin_dir('icons/wind.png'),
@@ -455,21 +455,21 @@ class Weather(BasePlugin):
         })
 
         data_points.append({
-            "label": "Humidity",
+            "label": "Wilgotność",
             "measurement": weather.get('current', {}).get("humidity"),
             "unit": '%',
             "icon": self.get_plugin_dir('icons/humidity.png')
         })
 
         data_points.append({
-            "label": "Pressure",
+            "label": "Ciśnienie",
             "measurement": weather.get('current', {}).get("pressure"),
             "unit": 'hPa',
             "icon": self.get_plugin_dir('icons/pressure.png')
         })
 
         data_points.append({
-            "label": "UV Index",
+            "label": "Indeks UV",
             "measurement": weather.get('current', {}).get("uvi"),
             "unit": '',
             "icon": self.get_plugin_dir('icons/uvi.png')
@@ -478,7 +478,7 @@ class Weather(BasePlugin):
         visibility = weather.get('current', {}).get("visibility")/1000
         visibility_str = f">{visibility}" if visibility >= 10 else visibility
         data_points.append({
-            "label": "Visibility",
+            "label": "Widoczność",
             "measurement": visibility_str,
             "unit": 'km',
             "icon": self.get_plugin_dir('icons/visibility.png')
@@ -486,7 +486,7 @@ class Weather(BasePlugin):
 
         aqi = air_quality.get('list', [])[0].get("main", {}).get("aqi")
         data_points.append({
-            "label": "Air Quality",
+            "label": "Jakość Powietrza",
             "measurement": aqi,
             "unit": ["Good", "Fair", "Moderate", "Poor", "Very Poor"][int(aqi)-1],
             "icon": self.get_plugin_dir('icons/aqi.png')
@@ -508,7 +508,7 @@ class Weather(BasePlugin):
         if sunrise_times:
             sunrise_dt = datetime.fromisoformat(sunrise_times[0]).astimezone(tz)
             data_points.append({
-                "label": "Sunrise",
+                "label": "Wschód",
                 "measurement": self.format_time(sunrise_dt, time_format, include_am_pm=False),
                 "unit": "" if time_format == "24h" else sunrise_dt.strftime('%p'),
                 "icon": self.get_plugin_dir('icons/sunrise.png')
@@ -521,7 +521,7 @@ class Weather(BasePlugin):
         if sunset_times:
             sunset_dt = datetime.fromisoformat(sunset_times[0]).astimezone(tz)
             data_points.append({
-                "label": "Sunset",
+                "label": "Zachód",
                 "measurement": self.format_time(sunset_dt, time_format, include_am_pm=False),
                 "unit": "" if time_format == "24h" else sunset_dt.strftime('%p'),
                 "icon": self.get_plugin_dir('icons/sunset.png')
@@ -535,7 +535,7 @@ class Weather(BasePlugin):
         wind_arrow = self.get_wind_arrow(wind_deg)
         wind_unit = UNITS[units]["speed"]
         data_points.append({
-            "label": "Wind", "measurement": wind_speed, "unit": wind_unit,
+            "label": "Wiatr", "measurement": wind_speed, "unit": wind_unit,
             "icon": self.get_plugin_dir('icons/wind.png'), "arrow": wind_arrow
         })
 
@@ -552,7 +552,7 @@ class Weather(BasePlugin):
                 logger.warning(f"Could not parse time string {time_str} for humidity.")
                 continue
         data_points.append({
-            "label": "Humidity", "measurement": current_humidity, "unit": '%',
+            "label": "Wilgotność", "measurement": current_humidity, "unit": '%',
             "icon": self.get_plugin_dir('icons/humidity.png')
         })
 
@@ -569,7 +569,7 @@ class Weather(BasePlugin):
                 logger.warning(f"Could not parse time string {time_str} for pressure.")
                 continue
         data_points.append({
-            "label": "Pressure", "measurement": current_pressure, "unit": 'hPa',
+            "label": "Ciśnienie", "measurement": current_pressure, "unit": 'hPa',
             "icon": self.get_plugin_dir('icons/pressure.png')
         })
 
@@ -586,7 +586,7 @@ class Weather(BasePlugin):
                 logger.warning(f"Could not parse time string {time_str} for UV Index.")
                 continue
         data_points.append({
-            "label": "UV Index", "measurement": current_uv_index, "unit": '',
+            "label": "Indeks UV", "measurement": current_uv_index, "unit": '',
             "icon": self.get_plugin_dir('icons/uvi.png')
         })
 
@@ -610,12 +610,12 @@ class Weather(BasePlugin):
                 continue
 
         visibility_str = f">{current_visibility}" if isinstance(current_visibility, (int, float)) and (
-            (units == "imperial" and current_visibility >= 32808) or 
+            (units == "imperial" and current_visibility >= 32808) or
             (units != "imperial" and current_visibility >= 10)
         ) else current_visibility
 
         data_points.append({
-            "label": "Visibility", "measurement": visibility_str, "unit": unit_label,
+            "label": "Widoczność", "measurement": visibility_str, "unit": unit_label,
             "icon": self.get_plugin_dir('icons/visibility.png')
         })
 
@@ -635,7 +635,7 @@ class Weather(BasePlugin):
         if current_aqi:
             scale = ["Good","Fair","Moderate","Poor","Very Poor","Ext Poor"][min(current_aqi//20,5)]
         data_points.append({
-            "label": "Air Quality", "measurement": current_aqi,
+            "label": "Jakość Powietrza", "measurement": current_aqi,
             "unit": scale, "icon": self.get_plugin_dir('icons/aqi.png')
         })
 
@@ -657,7 +657,7 @@ class Weather(BasePlugin):
         for arrow, upper_bound in DIRECTIONS:
             if wind_deg < upper_bound:
                 return arrow
-        
+
         return "↑"
 
     def get_weather_data(self, api_key, units, lat, long):
@@ -665,7 +665,7 @@ class Weather(BasePlugin):
         response = requests.get(url)
         if not 200 <= response.status_code < 300:
             logging.error(f"Failed to retrieve weather data: {response.content}")
-            raise RuntimeError("Failed to retrieve weather data.")
+            raise RuntimeError("Nie udało się pobrać danych pogodowych.")
 
         return response.json()
 
@@ -675,7 +675,7 @@ class Weather(BasePlugin):
 
         if not 200 <= response.status_code < 300:
             logging.error(f"Failed to get air quality data: {response.content}")
-            raise RuntimeError("Failed to retrieve air quality data.")
+            raise RuntimeError("Nie udało się pobrać danych o jakości powietrza.")
 
         return response.json()
 
@@ -685,7 +685,7 @@ class Weather(BasePlugin):
 
         if not 200 <= response.status_code < 300:
             logging.error(f"Failed to get location: {response.content}")
-            raise RuntimeError("Failed to retrieve location.")
+            raise RuntimeError("Nie udało się pobrać lokalizacji.")
 
         location_data = response.json()[0]
         location_str = f"{location_data.get('name')}, {location_data.get('state', location_data.get('country'))}"
@@ -696,11 +696,11 @@ class Weather(BasePlugin):
         unit_params = OPEN_METEO_UNIT_PARAMS[units]
         url = OPEN_METEO_FORECAST_URL.format(lat=lat, long=long, forecast_days=forecast_days) + f"&{unit_params}"
         response = requests.get(url)
-        
+
         if not 200 <= response.status_code < 300:
             logging.error(f"Failed to retrieve Open-Meteo weather data: {response.content}")
-            raise RuntimeError("Failed to retrieve Open-Meteo weather data.")
-        
+            raise RuntimeError("Nie udało się pobrać danych pogodowych Open-Meteo.")
+
         return response.json()
 
     def get_open_meteo_air_quality(self, lat, long):
@@ -708,22 +708,22 @@ class Weather(BasePlugin):
         response = requests.get(url)
         if not 200 <= response.status_code < 300:
             logging.error(f"Failed to retrieve Open-Meteo air quality data: {response.content}")
-            raise RuntimeError("Failed to retrieve Open-Meteo air quality data.")
-        
+            raise RuntimeError("Nie udało się pobrać danych o jakości powietrza Open-Meteo.")
+
         return response.json()
-    
+
     def format_time(self, dt, time_format, hour_only=False, include_am_pm=True):
         """Format datetime based on 12h or 24h preference"""
         if time_format == "24h":
             return dt.strftime("%H:00" if hour_only else "%H:%M")
-        
+
         if include_am_pm:
             fmt = "%I %p" if hour_only else "%I:%M %p"
         else:
             fmt = "%I" if hour_only else "%I:%M"
 
         return dt.strftime(fmt).lstrip("0")
-    
+
     def parse_timezone(self, weatherdata):
         """Parse timezone from weather data"""
         if 'timezone' in weatherdata:
@@ -731,4 +731,4 @@ class Weather(BasePlugin):
             return pytz.timezone(weatherdata['timezone'])
         else:
             logger.error("Failed to retrieve Timezone from weather data")
-            raise RuntimeError("Timezone not found in weather data.")
+            raise RuntimeError("Nie znaleziono strefy czasowej w danych pogodowych.")
