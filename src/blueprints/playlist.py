@@ -114,7 +114,7 @@ def create_playlist():
         logger.exception("EXCEPTION CAUGHT: " + str(e))
         return jsonify({"error": t("error_occurred", lang, name=str(e))}), 500
 
-    return jsonify({"success": True, "message": t("failed_to_create_playlist", lang)})
+    return jsonify({"success": True, "message": t("created_new_playlist", lang)})
 
 
 @playlist_bp.route('/update_playlist/<string:playlist_name>', methods=['PUT'])

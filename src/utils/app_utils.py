@@ -5,6 +5,9 @@ import subprocess
 
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageOps
+from flask import current_app
+
+from utils.locale_utils import t
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +48,7 @@ def resolve_path(file_path):
     if src_dir is None:
         # Default to the src directory
         src_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    
+
     src_path = Path(src_dir)
     return str(src_path / file_path)
 
@@ -105,6 +108,9 @@ def get_font_path(font_name):
     return resolve_path(os.path.join("static", "fonts", FONTS[font_name]))
 
 def generate_startup_image(dimensions=(800,480)):
+    device_config = current_app.config['DEVICE_CONFIG']
+    lang = device_config.config.get("language", "pl")
+
     bg_color = (255,255,255)
     text_color = (0,0,0)
     width, height = dimensions
@@ -118,7 +124,7 @@ def generate_startup_image(dimensions=(800,480)):
     title_font_size = width * 0.145
     image_draw.text((width/2, height/2), "inkypi", anchor="mm", fill=text_color, font=get_font("Jost", title_font_size))
 
-    text = f"To get started, visit http://{hostname}.local"
+    text = t("get_started", lang, hostname=hostname)
     text_font_size = width * 0.032
 
     # Draw the instructions
@@ -126,7 +132,7 @@ def generate_startup_image(dimensions=(800,480)):
     image_draw.text((width/2, y_text), text, anchor="mm", fill=text_color, font=get_font("Jost", text_font_size))
 
     # Draw the IP on a line below
-    ip_text = f"or http://{ip}"
+    ip_text = t("get_started", lang, ip=ip)
     ip_text_font_size = width * 0.032
     bbox = image_draw.textbbox((0, 0), text, font=get_font("Jost", text_font_size))
     text_height = bbox[3] - bbox[1]

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playlists</title>
+    <title>Playlisty</title>
     <script>
         (function() {
             const theme = localStorage.getItem('inkypi-theme') ||
@@ -117,7 +117,7 @@
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while processing your request.');
+                alert('Wystąpił błąd podczas przetwarzania Twojego żądania.');
             }
         }
 
@@ -163,14 +163,14 @@
 
                 const result = await response.json();
                 if (response.ok) {
-                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Success! ${result.message}` }));
+                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Sukces! ${result.message}` }));
                     location.reload();
                 } else {
-                    showResponseModal('failure', `Error!  ${result.error}`);
+                    showResponseModal('failure', `Błąd!  ${result.error}`);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while processing your request.');
+                alert('Wystąpił błąd podczas przetwarzania Twojego żądania.');
             } finally {
                 // Hide loading indicator after the action is complete
                 loadingIndicator.style.display = 'none';
@@ -179,7 +179,7 @@
 
         // Open modal for **creating** a new playlist
         function openCreateModal() {
-            document.getElementById("modalTitle").textContent = "New Playlist";
+            document.getElementById("modalTitle").textContent = "Nowa Playlista";
             document.getElementById("playlist_name").value = "";
             document.getElementById("editingPlaylistName").value = ""; // Empty value means it's new
             document.getElementById("start_time").value = "00:00";
@@ -193,7 +193,7 @@
 
         // Open modal for **editing** an existing playlist
         function openEditModal(playlistName, startTime, endTime) {
-            document.getElementById("modalTitle").textContent = "Update Playlist";
+            document.getElementById("modalTitle").textContent = "Edytuj Playlistę";
             document.getElementById("playlist_name").value = playlistName;
             document.getElementById("editingPlaylistName").value = playlistName;
             document.getElementById("start_time").value = startTime;
@@ -232,14 +232,14 @@
                 const result = await response.json();
                 if (response.ok) {
                     closeModal(); // Close the modal on success
-                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Success! ${result.message}` }));
+                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Sukces! ${result.message}` }));
                     location.reload();
                 } else {
-                    showResponseModal('failure', `Error!  ${result.error}`);
+                    showResponseModal('failure', `Błąd!  ${result.error}`);
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert('An error occurred while processing your request.');
+                alert('Wystąpił błąd podczas przetwarzania Twojego żądania.');
             }
         }
 
@@ -261,14 +261,14 @@
                 const result = await response.json();
                 if (response.ok) {
                     closeModal(); // Close the modal after success
-                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Success! ${result.message}` }));
+                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Sukces! ${result.message}` }));
                     location.reload();
                 } else {
-                    showResponseModal('failure', `Error!  ${result.error}`);
+                    showResponseModal('failure', `Błąd!  ${result.error}`);
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert('An error occurred while processing your request.');
+                alert('Wystąpił błąd podczas przetwarzania Twojego żądania.');
             }
         }
 
@@ -282,14 +282,14 @@
                 const result = await response.json();
                 if (response.ok) {
                     closeModal(); // Close the modal after success
-                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Success! ${result.message}` }));
+                    sessionStorage.setItem("storedMessage", JSON.stringify({ type: "success", text: `Sukces! ${result.message}` }));
                     location.reload();
                 } else {
-                    showResponseModal('failure', `Error!  ${result.error}`);
+                    showResponseModal('failure', `Błąd!  ${result.error}`);
                 }
             } catch (error) {
                 console.error("Error:", error);
-                alert('An error occurred while processing your request.');
+                alert('Wystąpił błąd podczas przetwarzania Twojego żądania.');
             }
         }
 
@@ -326,15 +326,15 @@
 <body>
     <div class="frame">
         <!-- Back Button -->
-        <button onclick="history.back()" class="back-button">← Back</button>
+        <button onclick="history.back()" class="back-button">← Powrót</button>
         <!-- Settings Header -->
         <div class="app-header">
             <div class="header-content">
                 <div class="title-container">
                     <img src="{{ url_for('static', filename='icons/playlist.png') }}" alt="playlist icon" class="app-icon">
-                    <h1 class="app-title">Playlists</h1>
+                    <h1 class="app-title">Playlisty</h1>
                 </div>
-                <button class="header-button" onclick="openCreateModal()">New Playlist</button>
+                <button class="header-button" onclick="openCreateModal()">Nowa Playlista</button>
             </div>
         </div>
         <div class="separator"></div>
@@ -362,7 +362,7 @@
                                         src="{{ url_for('plugin.plugin_instance_image', playlist_name=playlist.name, plugin_id=plugin_instance.plugin_id, instance_name=plugin_instance.name) }}"
                                         alt="Preview"
                                         class="plugin-thumbnail"
-                                        title="Click to view full size"
+                                        title="Naciśnij żeby zobaczyć pełny rozmiar"
                                         onerror="this.parentElement.style.display='none';"
                                     >
                                 </div>
@@ -370,7 +370,7 @@
 
                                 <!-- Check if the current plugin is the one being displayed -->
                                 {% if playlist.name == refresh_info.playlist and plugin_instance.name == refresh_info.plugin_instance %}
-                                <span class="displayed-now">Displayed Now</span>
+                                <span class="displayed-now">Wyświetl teraz</span>
                                 {% endif %}
                                 <div id="loadingIndicator" class="loading-indicator small left-align"></div>
 
@@ -379,7 +379,7 @@
                                 {% if plugin_instance.latest_refresh_time %}
                                     {% set refresh_time = plugin_instance.latest_refresh_time | format_relative_time %}
                                     <span class="latest-refresh" title="{{plugin_instance.latest_refresh_time}}">
-                                        Refreshed {{ refresh_time }}
+                                        Odświeżono {{ refresh_time }}
                                     </span>
                                 {% endif %}
 
@@ -389,7 +389,7 @@
                                 <button class="edit-button" title="Display Now" onclick="displayPluginInstance('{{ playlist.name }}', '{{ plugin_instance.plugin_id }}','{{ plugin_instance.name }}')">
                                     <img src="{{ url_for('static', filename='icons/display.png') }}" alt="display now" class="action-icon">
                                 </button>
-                                <button class="delete-button" title="Delete Plugin Instance" onclick="deletePluginInstance('{{ playlist.name }}', '{{ plugin_instance.plugin_id }}','{{ plugin_instance.name }}')">
+                                <button class="delete-button" title="Usuń instancję Pluginu" onclick="deletePluginInstance('{{ playlist.name }}', '{{ plugin_instance.plugin_id }}','{{ plugin_instance.name }}')">
                                     <img src="{{ url_for('static', filename='icons/remove.png') }}" alt="delete plugin" class="action-icon">
                                 </button>
                             </div>
@@ -405,25 +405,25 @@
     <div id="playlistModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">×</span>
-            <h2 id="modalTitle">New Playlist</h2>
+            <h2 id="modalTitle">Nowa Playlista</h2>
             <div class="separator"></div>
             <form id="scheduleForm" class="settings-form">
                 <input type="hidden" id="editingPlaylistName" value="">  <!-- Track existing playlist -->
 
                 <div class="form-group">
-                    <label for="playlist_name" class="form-label">Playlist Name:</label>
-                    <input type="text" id="playlist_name" name="playlist_name" placeholder="Type something..." required class="form-input">
+                    <label for="playlist_name" class="form-label">Nazwa Playlisty:</label>
+                    <input type="text" id="playlist_name" name="playlist_name" placeholder="Podaj nazwę..." required class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="start_time" class="form-label">Display from </label>
+                    <label for="start_time" class="form-label">Wyświetlaj od </label>
                     <select id="start_time" name="start_time" class="form-input"></select>
                     <span> - </span>
                     <select id="end_time" name="end_time" class="form-input"></select>
                 </div>
             </form>
             <div class="buttons-container">
-                <button type="button" class="action-button" id="saveButton">Save</button>
-                <button type="button" class="action-button warn hidden" id="deleteButton" onclick="deletePlaylist()">Delete</button>
+                <button type="button" class="action-button" id="saveButton">Zapisz</button>
+                <button type="button" class="action-button warn hidden" id="deleteButton" onclick="deletePlaylist()">Usuń</button>
             </div>
         </div>
     </div>

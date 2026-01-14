@@ -6,6 +6,8 @@ import pytz
 import logging
 import io
 
+from utils.locale_utils import t
+
 # Try to import cysystemd for journal reading (Linux only)
 try:
     from cysystemd.reader import JournalReader, JournalOpenMode, Rule
@@ -34,23 +36,24 @@ def settings_page():
 @settings_bp.route('/save_settings', methods=['POST'])
 def save_settings():
     device_config = current_app.config['DEVICE_CONFIG']
+    lang = device_config.config.get("language", "pl")
 
     try:
         form_data = request.form.to_dict()
 
         unit, interval, time_format = form_data.get('unit'), form_data.get("interval"), form_data.get("timeFormat")
         if not unit or unit not in ["minute", "hour"]:
-            return jsonify({"error": "Plugin cycle interval unit is required"}), 400
+            return jsonify({"error": t("plugin_cycle_interval_unit_required", lang)}), 400
         if not interval or not interval.isnumeric():
-            return jsonify({"error": "Refresh interval is required"}), 400
+            return jsonify({"error": t("refresh_interval_required", lang)}), 400
         if not form_data.get("timezoneName"):
-            return jsonify({"error": "Time Zone is required"}), 400
+            return jsonify({"error": t("timezone_required", lang)}), 400
         if not time_format or time_format not in ["12h", "24h"]:
-            return jsonify({"error": "Time format is required"}), 400
+            return jsonify({"error": t("time_format_required", lang)}), 400
         previous_interval_seconds = device_config.get_config("plugin_cycle_interval_seconds")
         plugin_cycle_interval_seconds = calculate_seconds(int(interval), unit)
         if plugin_cycle_interval_seconds > 86400 or plugin_cycle_interval_seconds <= 0:
-            return jsonify({"error": "Plugin cycle interval must be less than 24 hours"}), 400
+            return jsonify({"error": t("plugin_cycle_interval_validation", lang)}), 400
 
         settings = {
             "name": form_data.get("deviceName"),
@@ -76,8 +79,8 @@ def save_settings():
     except RuntimeError as e:
         return jsonify({"error": str(e)}), 500
     except Exception as e:
-        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-    return jsonify({"success": True, "message": "Saved settings."})
+        return jsonify({"error": t("error_occurred", lang, e=e)}), 500
+    return jsonify({"success": True, "message": t("saved_settings", lang)})
 
 @settings_bp.route('/shutdown', methods=['POST'])
 def shutdown():
@@ -94,7 +97,7 @@ def shutdown():
 def download_logs():
     try:
         buffer = io.StringIO()
-        
+
         # Get 'hours' from query parameters, default to 2 if not provided or invalid
         hours_str = request.args.get('hours', '2')
         try:
