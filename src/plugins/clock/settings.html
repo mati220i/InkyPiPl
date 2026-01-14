@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="clock-face" class="form-label">Clock Face:</label>
+    <label for="clock-face" class="form-label">Tarcza zegara:</label>
 
     <div id="clock-face-selection" class="image-grid">
         {% for face in clock_faces %}
@@ -21,11 +21,11 @@
 </div>
 <div class="form-group">
     <div class="form-group">
-        <label for="primaryColor" class="form-label">Primary Color:</label>
+        <label for="primaryColor" class="form-label">Główny Kolor:</label>
         <input type="color" name="primaryColor" class="color-picker" value="{{ clock_faces[0].primary_color }}"/>
     </div>
     <div class="form-group">
-        <label for="secondaryColor" class="form-label">Secondary Color:</label>
+        <label for="secondaryColor" class="form-label">Drugi Kolor:</label>
         <input type="color" name="secondaryColor" class="color-picker" value="{{ clock_faces[0].secondary_color }}"/>
     </div>
 </div>
@@ -52,7 +52,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const clockFaceContainer = document.getElementById('clock-face-selection');
         const selectedClockFaceInput = document.getElementById('selected-clock-face');
-        
+
         // Check if pluginSettings has a selectedClockFace value
         const selectedClockFaceFromSettings = pluginSettings?.selectedClockFace;
 

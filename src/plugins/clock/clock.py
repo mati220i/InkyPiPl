@@ -13,25 +13,25 @@ logger = logging.getLogger(__name__)
 
 CLOCK_FACES = [
     {
-        "name": "Gradient Clock",
+        "name": "Gradientowy Zegar",
         "primary_color": "#db3246",
         "secondary_color": "#000000",
         "icon": "faces/gradient.png"
     },
     {
-        "name": "Digital Clock",
+        "name": "Cyfrowy Zegar",
         "primary_color": "#ffffff",
         "secondary_color": "#000000",
         "icon": "faces/digital.png"
     },
     {
-        "name": "Divided Clock",
+        "name": "Podzielony Zegar",
         "primary_color": "#20b7ae",
         "secondary_color": "#ffffff",
         "icon": "faces/divided.png"
     },
     {
-        "name": "Word Clock",
+        "name": "Słowy Zegar",
         "primary_color": "#000000",
         "secondary_color": "#ffffff",
         "icon": "faces/word.png"
@@ -39,7 +39,7 @@ CLOCK_FACES = [
 ]
 
 DEFAULT_TIMEZONE = "US/Eastern"
-DEFAULT_CLOCK_FACE = "Gradient Clock"
+DEFAULT_CLOCK_FACE = "Gradientowy Zegar"
 
 class Clock(BasePlugin):
     def generate_settings_template(self):
@@ -64,19 +64,19 @@ class Clock(BasePlugin):
 
         img = None
         try:
-            if clock_face == "Gradient Clock":
+            if clock_face == "Gradientowy Zegar":
                 img = self.draw_conic_clock(dimensions, current_time, primary_color, secondary_color)
-            elif clock_face == "Digital Clock":
+            elif clock_face == "Cyfrowy Zegar":
                 img = self.draw_digital_clock(dimensions, current_time, primary_color, secondary_color)
-            elif clock_face == "Divided Clock":
+            elif clock_face == "Podzielony Zegar":
                 img = self.draw_divided_clock(dimensions, current_time, primary_color, secondary_color)
-            elif clock_face == "Word Clock":
+            elif clock_face == "Słowy Zegar":
                 img = self.draw_word_clock(dimensions, current_time, primary_color, secondary_color)
         except Exception as e:
             logger.error(f"Failed to draw clock image: {str(e)}")
-            raise RuntimeError("Failed to display clock.")
+            raise RuntimeError("Bład podczas wyświetlania zegara.")
         return img
-    
+
     def draw_digital_clock(self, dimensions, time, primary_color=(255,255,255), secondary_color=(0,0,0)):
         w,h = dimensions
         time_str = Clock.format_time(time.hour, time.minute, zero_pad = True)
@@ -92,10 +92,10 @@ class Clock(BasePlugin):
         text_draw.text((w/2, h/2), "00:00", font=fnt, anchor="mm", fill=primary_color +(30,))
         text_draw.text((w/2, h/2), time_str, font=fnt, anchor="mm", fill=primary_color +(255,))
 
-        combined = Image.alpha_composite(image, text)    
+        combined = Image.alpha_composite(image, text)
 
         return combined
-        
+
     def draw_conic_clock(self, dimensions, time, primary_color=(219, 50, 70, 255), secondary_color=(0, 0, 0, 255) ):
         width, height = dimensions
         hour_angle, minute_angle = Clock.calculate_clock_angles(time)
@@ -115,7 +115,7 @@ class Clock(BasePlugin):
         dim = min(width, height)
         minute_length = dim * 0.35
         hour_length = dim * 0.22
-        
+
         hand_width = max(int(dim*0.013), 1)
         border_width = max(int(dim*0.005), 1)
 
@@ -123,7 +123,7 @@ class Clock(BasePlugin):
         offset_width = max(int(dim*0.008), 1)
         Clock.draw_clock_hand(final_image, minute_length, minute_angle, primary_color, border_color=(255, 255, 255), border_width=border_width, hand_offset=hand_offset, offset_width=offset_width, hand_width=hand_width)
         Clock.draw_clock_hand(final_image, hour_length, hour_angle, primary_color, border_color=(255, 255, 255), border_width=border_width, hand_offset=hand_offset, offset_width=offset_width, hand_width=hand_width)
-        
+
         Clock.drew_clock_center(final_image, max(int(dim*0.01), 1), primary_color, outline_color=(255, 255, 255, 255), width=max(int(dim*0.004), 1))
 
         return final_image
@@ -150,7 +150,7 @@ class Clock(BasePlugin):
 
         # clock outline
         image_draw.circle((w/2,h/2), face_size, fill=primary_color, outline=secondary_color, width=int(dim * 0.03125))
-        
+
         Clock.draw_hour_marks(image_draw._image, face_size - int(w*0.04375))
 
         hour_angle, minute_angle = Clock.calculate_clock_angles(time)
@@ -160,7 +160,7 @@ class Clock(BasePlugin):
 
         Clock.drew_clock_center(image_draw._image, max(int(dim*0.014), 1), primary_color, secondary_color, width=max(int(dim* 0.007), 1))
 
-        combined = Image.alpha_composite(bg, canvas)    
+        combined = Image.alpha_composite(bg, canvas)
 
         return combined
 
@@ -201,14 +201,14 @@ class Clock(BasePlugin):
         canvas_size = min(w,h) - min(border)*2
         for y, row in enumerate(letter_grid):
             for x, letter in enumerate(row):
-                x_pos = x*(canvas_size/(len(row)-1)) + border[0] 
+                x_pos = x*(canvas_size/(len(row)-1)) + border[0]
                 y_pos = y*(canvas_size/(len(letter_grid)-1)) + border[1]
 
                 fill=secondary_color+(50,)
                 if [y,x] in letter_positions:
                     fill=secondary_color+(255,)
                     image_draw.text((x_pos+2, y_pos+2), letter, anchor="mm", fill=secondary_color+(80,), font=fnt)
-                
+
                 image_draw.text((x_pos, y_pos), letter, anchor="mm", fill=fill, font=fnt)
 
         combined = Image.alpha_composite(bg, canvas)
@@ -253,7 +253,7 @@ class Clock(BasePlugin):
             gradient[..., c] = (
                 start_color[c] * (1 - theta) + end_color[c] * (theta)
             ).astype(np.uint8)
-        
+
         # Fill with the specified solid color
         gradient[~anglemask] = (0, 0, 0, 0)
         return Image.fromarray(gradient, mode="RGBA")
@@ -278,7 +278,7 @@ class Clock(BasePlugin):
             offset_start = (x1, y1)
             offset_end = (x1 + hand_offset * np.cos(-angle), y1 + hand_offset * np.sin(-angle))
             draw.line([offset_start, offset_end], fill=border_color, width=offset_width, joint=None)
-        
+
         # add hand_offset if set
         x1 = x1 + hand_offset * np.cos(-angle)
         y1 = y1 + hand_offset * np.sin(-angle)
