@@ -16,12 +16,12 @@ class Countdown(BasePlugin):
         countdown_date_str = settings.get('date')
 
         if not countdown_date_str:
-            raise RuntimeError("Date is required.")
+            raise RuntimeError("Data jest wymagana.")
 
         dimensions = device_config.get_resolution()
         if device_config.get_config("orientation") == "vertical":
             dimensions = dimensions[::-1]
-        
+
         timezone = device_config.get_config("timezone", default="America/New_York")
         tz = pytz.timezone(timezone)
         current_time = datetime.now(tz)
@@ -30,7 +30,7 @@ class Countdown(BasePlugin):
         countdown_date = tz.localize(countdown_date)
 
         day_count = (countdown_date.date() - current_time.date()).days
-        label = "Days Left" if day_count > 0 else "Days Passed"
+        label = "Pozostało dni" if day_count > 0 else "Upłynęło dni"
 
         template_params = {
             "title": title,
