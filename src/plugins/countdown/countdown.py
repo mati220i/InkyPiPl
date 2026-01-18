@@ -13,7 +13,7 @@ class Countdown(BasePlugin):
         return template_params
 
     def generate_image(self, settings, device_config):
-        locale.setlocale(locale.LC_TIME, "pl_PL.UTF-8")
+        # locale.setlocale(locale.LC_TIME, "pl_PL.UTF-8")
 
         title = settings.get('title')
         countdown_date_str = settings.get('date')
@@ -33,7 +33,7 @@ class Countdown(BasePlugin):
         countdown_date = tz.localize(countdown_date)
 
         day_count = (countdown_date.date() - current_time.date()).days
-        label = "Dni pozostało" if day_count > 0 else "Upłynęło dni"
+        label = "Pozostało dni" if day_count > 0 else "Upłynęło dni"
 
         template_params = {
             "title": title,
