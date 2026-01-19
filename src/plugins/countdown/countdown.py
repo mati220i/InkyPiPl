@@ -3,8 +3,7 @@ from PIL import Image
 from datetime import datetime, timezone
 import logging
 import pytz
-from babel.dates import format_date
-
+import locale
 
 logger = logging.getLogger(__name__)
 class Countdown(BasePlugin):
@@ -14,6 +13,8 @@ class Countdown(BasePlugin):
         return template_params
 
     def generate_image(self, settings, device_config):
+        # locale.setlocale(locale.LC_TIME, "pl_PL.UTF-8")
+
         title = settings.get('title')
         countdown_date_str = settings.get('date')
 
@@ -31,18 +32,12 @@ class Countdown(BasePlugin):
         countdown_date = datetime.strptime(countdown_date_str, "%Y-%m-%d")
         countdown_date = tz.localize(countdown_date)
 
-        formatted_date = format_date(
-            countdown_date,
-            format="d MMMM y",
-            locale="pl"
-        )
-
         day_count = (countdown_date.date() - current_time.date()).days
         label = "Pozostało dni" if day_count > 0 else "Upłynęło dni"
 
         template_params = {
             "title": title,
-            "date": formatted_date,
+            "date": countdown_date.strftime("%B %d, %Y"),
             "day_count": abs(day_count),
             "label": label,
             "plugin_settings": settings
