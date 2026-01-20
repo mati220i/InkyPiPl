@@ -1,20 +1,20 @@
 <div class="form-group">
-    <label for="albumProvider" class="form-label">Album Provider:</label>
+    <label for="albumProvider" class="form-label">Dostawca Albumu:</label>
     <select id="albumProvider" name="albumProvider" class="form-input" onchange="updateTitleOptions(this.value)">
         <option value="Immich">Immich</option>
     </select>
 </div>
 
 <div class="form-group">
-    <label for="url" class="form-label">Base URL:</label>
-    <input type="text" id="url" name="url" placeholder="Type something..." required class="form-input">
-     <label for="album" class="form-label">Album Name:</label>
-    <input type="text" id="album" name="album" placeholder="Type something..." required class="form-input">
+    <label for="url" class="form-label">Ścieżka URL:</label>
+    <input type="text" id="url" name="url" placeholder="Wpisz coś..." required class="form-input">
+     <label for="album" class="form-label">Nazwa Albumu:</label>
+    <input type="text" id="album" name="album" placeholder="Wpisz coś..." required class="form-input">
 </div>
 
 <div class="form-group">
     <div class="form-group">
-        <label for="padImage" class="form-label">Scale to Fit:</label>
+        <label for="padImage" class="form-label">Dopasuj do ekranu:</label>
         <div class="toggle-container">
             <input type="checkbox" id="padImage" name="padImage" class="toggle-checkbox" value="false">
             <label for="padImage" class="toggle-label"></label>
@@ -24,7 +24,7 @@
     </div>
 
    <div class="form-group">
-        <label for="randomize" class="form-label">Random Order:</label>
+        <label for="randomize" class="form-label">Losowa kolejność:</label>
         <div class="toggle-container">
             <input type="checkbox" id="randomize" name="randomize" class="toggle-checkbox" value="false"
                 onclick="this.value = this.checked ? 'true' : 'false'">
@@ -33,12 +33,12 @@
     </div>
 
     <div class="form-group">
-        <label class="form-label" for="backgroundOption">Background:</label>
+        <label class="form-label" for="backgroundOption">Tło:</label>
         <div class="form-group">
             <input type="radio" id="backgroundOption" name="backgroundOption" value="blur">
             <label>Blur</label>
             <input type="radio" id="backgroundOption" name="backgroundOption" value="color">
-            <label>Color</label>
+            <label>Kolor</label>
             <input type="color" id="backgroundColor" name="backgroundColor" value="#ffffff" class="color-picker"/>
         </div>
     </div>

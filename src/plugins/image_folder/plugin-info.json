@@ -1,5 +1,5 @@
 {
-    "display_name": "Image Folder",
+    "display_name": "Folder zdjęć",
     "id": "image_folder",
     "class": "ImageFolder"
 }

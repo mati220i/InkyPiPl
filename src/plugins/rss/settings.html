@@ -1,10 +1,10 @@
 <div class="form-group">
     <div class="form-group">
-        <label for="title" class="form-label">Title:</label>
-        <input type="text" id="title" name="title" placeholder="Type something..." required class="form-input">
+        <label for="title" class="form-label">Tytuł:</label>
+        <input type="text" id="title" name="title" placeholder="Wpisz coś..." required class="form-input">
     </div>
     <div class="form-group">
-        <label for="includeImages" class="form-label">Include Images:</label>
+        <label for="includeImages" class="form-label">Dołącz Obrazy:</label>
         <div class="toggle-container">
             <input type="checkbox" id="includeImages" name="includeImages" class="toggle-checkbox" value="false"
                 onclick="this.value = this.checked ? 'true' : 'false'">
@@ -12,25 +12,25 @@
         </div>
     </div>
     <div class="form-group nowrap">
-        <label for="fontSize" class="form-label">Font Size:</label>
+        <label for="fontSize" class="form-label">Rozmiar Czcionki:</label>
         <select id="fontSize" name="fontSize" class="form-input">
-            <option value="x-small">Extra Small</option>
-            <option value="small">Small</option>
-            <option value="normal">Normal</option>
-            <option value="large">Large</option>
-            <option value="x-large">Extra Larger</option>
+            <option value="x-small">Bardzo Mała</option>
+            <option value="small">Mała</option>
+            <option value="normal">Normalna</option>
+            <option value="large">Duża</option>
+            <option value="x-large">Bardzo Duża</option>
         </select>
     </div>
 </div>
 <div class="form-group">
     <div class="form-group">
-        <label for="feedUrl" class="form-label">RSS Feed Url:</label>
-        <input type="text" id="feedUrl" name="feedUrl" placeholder="Type something..." required class="form-input">
+        <label for="feedUrl" class="form-label">Url RSS:</label>
+        <input type="text" id="feedUrl" name="feedUrl" placeholder="Wpisz coś..." required class="form-input">
     </div>
 </div>
 
 <div class="form-group">
-    <span style="color: var(--text-primary);">Warning: Do not run with untrusted URLs, as it may pose a security risk.</span>
+    <span style="color: var(--text-primary);">Ostrzeżenie: Nie uruchamiaj z niezaufanych adresów URL, ponieważ może to stanowić zagrożenie bezpieczeństwa.</span>
 </div>
 
 <script>

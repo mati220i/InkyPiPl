@@ -1,5 +1,5 @@
 {
-    "display_name": "Today's Newspaper",
+    "display_name": "Dzisiejsza Gazeta",
     "id": "newspaper",
     "class": "Newspaper",
     "image_settings": ["keep-width"]

@@ -2,14 +2,14 @@
 <div class="form-group">
     <!-- Newspaper Input -->
     <div class="form-group">
-        <label for="newspaper" class="form-label">Newspaper:</label>
+        <label for="newspaper" class="form-label">Gazeta:</label>
         <input
             type="text"
             id="newspaper"
             name="newspaperName"
             class="form-input"
             list="newspaperList"
-            placeholder="Type to search..."
+            placeholder="Wpisz coś..."
             onchange="updateSlugAndLocation()"
         />
         <datalist id="newspaperList">
@@ -24,14 +24,14 @@
 
     <!-- Location Input -->
     <div class="form-group">
-        <label for="locationSearch" class="form-label">Location:</label>
+        <label for="locationSearch" class="form-label">Lokalizacja:</label>
         <input
             type="text"
             id="locationSearch"
             name="locationSearch"
             class="form-input"
             list="locationOptions"
-            placeholder="Type to search..."
+            placeholder="Wpisz coś..."
             onchange="filterNewspapersByLocation()"
         />
         <datalist id="locationOptions">

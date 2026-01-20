@@ -1,5 +1,5 @@
 <div class="form-group nowrap">
-    <label for="comic" class="form-label">Comic:</label>
+    <label for="comic" class="form-label">Komiks:</label>
     <select id="comic" name="comic" class="form-input">
         {% for comic in comics %}
         <option value="{{comic}}">{{comic}}</option>
@@ -9,7 +9,7 @@
 
 <div class="form-group">
     <div class="form-group">
-        <label for="titleCaption" class="form-label">Show Comic Title and Caption:</label>
+        <label for="titleCaption" class="form-label">Pokaż tytuł i podpis komiksu:</label>
         <div class="toggle-container">
             <input type="checkbox" id="titleCaption" name="titleCaption" class="toggle-checkbox" value="true" checked onclick="this.value=this.checked ? 'true' : 'false';">
             <label for="titleCaption" class="toggle-label"></label>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="form-group">
-        <label for="fontSize" class="form-label">Font Size:</label>
+        <label for="fontSize" class="form-label">Rozmiar czcionki:</label>
         <select id="fontSize" name="fontSize" class="form-input"">
             <option value="12">12</option>
             <option value="14" selected="selected">14</option>
