@@ -37,7 +37,7 @@ class Countdown(BasePlugin):
 
         template_params = {
             "title": title,
-            "date": countdown_date.strftime("%B %d, %Y"),
+            "date": countdown_date.strftime("%d %B %Y"),
             "day_count": abs(day_count),
             "label": label,
             "plugin_settings": settings
