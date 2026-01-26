@@ -23,8 +23,8 @@
 
     <label for="units" class="form-label">Jednostki:</label>
     <select id="units" name="units" class="form-input">
-        <option value="imperial">Imperialne (°F)</option>
         <option value="metric">Metryczne (°C)</option>
+        <option value="imperial">Imperialne (°F)</option>
         <option value="standard">Standardowe (K)</option>
     </select>
 </div>
@@ -219,7 +219,7 @@
             document.getElementById('customTitle').value = pluginSettings.customTitle || '';
         } else {
             // set default values
-            document.getElementById('units').value = "imperial";
+            document.getElementById('units').value = "metric";
             document.getElementById('displayRefreshTime').checked = true;
             document.getElementById('displayRefreshTime').value = "true";
             document.getElementById('displayMetrics').checked = true;
