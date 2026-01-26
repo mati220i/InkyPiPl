@@ -1,6 +1,17 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
+<style>
+
+  .section-header {
+    margin: 32px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #000;
+    font-weight: 600;
+  }
+
+</style>
+
 <h2 class="section-header">WiFi Info</h2>
 <div class="form-group">
   <div class="form-group nowrap">
@@ -30,6 +41,10 @@
     <input type="file" clear-on-submit id="imageUpload" name="imageFiles[]" accept="image/*" multiple
            class="file-upload-input" onchange="addFiles()">
   </div>
+  <!-- Display uploaded & existing file names -->
+  <div class="form-group">
+    <div id="fileNames" class="file-name-list"></div>
+  </div>
 </div>
 
 
@@ -45,7 +60,7 @@
 <h2 class="section-header">Dane Kontaktowe</h2>
 <div class="title-container form-group">
   <label for="contactInfo" class="form-label">Dane kontaktowe do wyświetlenia</label>
-  <textarea id="contactInfo" name="contactInfo" placeholder="Wpisz swoje dane kontaktowe do wyświetlenia...">${text}</textarea>
+  <textarea id="contactInfo" name="contactInfo" placeholder="Wpisz swoje dane kontaktowe do wyświetlenia..."></textarea>
 </div>
 
 
