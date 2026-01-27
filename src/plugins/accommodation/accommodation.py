@@ -23,6 +23,22 @@ OPEN_METEO_UNIT_PARAMS = {
     "imperial": "temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch"
 }
 
+UNITS = {
+    "standard": {
+        "temperature": "K",
+        "speed": "m/s"
+    },
+    "metric": {
+        "temperature": "°C",
+        "speed": "m/s"
+
+    },
+    "imperial": {
+        "temperature": "°F",
+        "speed": "mph"
+    }
+}
+
 class Accommodation(BasePlugin):
     def generate_settings_template(self):
         template_params = super().generate_settings_template()
