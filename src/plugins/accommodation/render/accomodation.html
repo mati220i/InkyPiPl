@@ -1,0 +1,40 @@
+{% extends "plugin.html" %}
+
+{% block content %}
+
+<div class="dashboard">
+
+  <div class="top-row">
+    <div class="time">
+      TIME 22:33
+    </div>
+    <div class="weather">
+      <img class="current-icon" src="{{current_day_icon}}" alt="Current Weather Icon">
+      <div class="current-temp">{{ current_temperature }}<span class="temperature-unit">{{temperature_unit}}</span></div>
+    </div>
+  </div>
+
+  <div class="middle">
+    <div class="wifi">
+      📶 Wi-Fi: TBD
+    </div>
+
+    <div class="qr">
+<!--      <img src="{{ qr_code_url }}" alt="QR Code">-->
+      TBD
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="checkout">
+      🏁 Check-out: {{ checkout_time }}
+    </div>
+    <div class="relative-day">
+<!--      {{ relative_day }}-->
+      TBD
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
