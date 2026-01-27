@@ -23,6 +23,24 @@ OPEN_METEO_UNIT_PARAMS = {
     "imperial": "temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch"
 }
 
+def get_moon_phase_name(phase_age: float) -> str:
+    """Determines the name of the lunar phase based on the age of the moon."""
+    PHASES_THRESHOLDS = [
+        (1.0, "newmoon"),
+        (7.0, "waxingcrescent"),
+        (8.5, "firstquarter"),
+        (14.0, "waxinggibbous"),
+        (15.5, "fullmoon"),
+        (22.0, "waninggibbous"),
+        (23.5, "lastquarter"),
+        (29.0, "waningcrescent"),
+    ]
+
+    for threshold, phase_name in PHASES_THRESHOLDS:
+        if phase_age <= threshold:
+            return phase_name
+    return "newmoon"
+
 UNITS = {
     "standard": {
         "temperature": "K",
