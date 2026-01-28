@@ -128,7 +128,7 @@ class Accommodation(BasePlugin):
             last_refresh_time = now.strftime("%Y-%m-%d %I:%M %p")
         template_params["last_refresh_time"] = last_refresh_time
 
-        image = self.render_image(dimensions, "weather.html", "weather.css", template_params)
+        image = self.render_image(dimensions, "accommodation.html", "accommodation.css", template_params)
 
         if not image:
             raise RuntimeError("Problem ze zrobieniem screenshota, proszę sprawdź logi.")
