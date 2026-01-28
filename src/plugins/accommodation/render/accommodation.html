@@ -16,22 +16,22 @@
 
   <div class="middle">
     <div class="wifi">
-      📶 Wi-Fi: TBD
+      📶 Wi-Fi: {{ plugin_settings.ssid }}
+      Hasło: {{ plugin_settings.password }}
     </div>
 
     <div class="qr">
 <!--      <img src="{{ qr_code_url }}" alt="QR Code">-->
-      TBD
+      QR CODE TBD
     </div>
   </div>
 
   <div class="bottom">
     <div class="checkout">
-      🏁 Check-out: {{ checkout_time }}
+      🏁 Check-out: {{ plugin_settings.date }}
     </div>
     <div class="relative-day">
-<!--      {{ relative_day }}-->
-      TBD
+      Do wymeldowania {{ relative_day }} dni
     </div>
   </div>
 
