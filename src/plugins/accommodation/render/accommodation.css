@@ -1,8 +1,9 @@
 .dashboard {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 20% 1fr 20%;
   height: 100%;
   padding: 20px;
+  box-sizing: border-box;
   font-family: sans-serif;
   color: #000;
 }
@@ -11,22 +12,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 80px;
-  gap: 16px;
+  border-bottom: 2px solid #000;
+  padding-bottom: 12px;
+  min-height: 100%;
 }
 
-
 .middle {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 24px;
+  gap: 32px;
 }
 
 .wifi {
-  font-size: 20px;
-  text-align: center;
+  font-size: 42px;
 }
 
 .qr {
@@ -35,8 +34,8 @@
 }
 
 .qr img {
-  width: 200px;
-  height: 200px;
+  width: 220px;
+  height: 220px;
 }
 
 .bottom {
@@ -56,20 +55,17 @@
 }
 
 .current-icon {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
+  width: 56px;
+  height: 56px;
 }
 
 .current-temp {
-  font-size: 42px;
-  font-weight: 600;
+  font-size: 44px;
   line-height: 1;
-  white-space: nowrap;
 }
 
 .time {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -77,8 +73,7 @@
 .weather {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 10px;
 }
 
 .temperature-unit {
