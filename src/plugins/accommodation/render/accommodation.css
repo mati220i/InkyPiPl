@@ -34,7 +34,7 @@
 }
 
 .time {
-  font-size: 50px;
+  font-size: 35px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -46,13 +46,13 @@
 }
 
 .current-icon {
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
 .current-temp {
-  font-size: 50px;
+  font-size: 35px;
   line-height: 1;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .wifi {
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .qr {
@@ -76,12 +76,12 @@
 }
 
 .checkout {
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 600;
 }
 
 .relative-day {
-  font-size: 40px;
+  font-size: 35px;
   margin-top: 4px;
 }
 
