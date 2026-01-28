@@ -20,14 +20,16 @@
 }
 
 .middle {
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
   gap: 40px;
 }
 
 .bottom {
+  margin-top: auto;
   border-top: 2px solid #000;
   padding-top: 12px;
   text-align: center;
@@ -63,6 +65,7 @@
 
 .wifi {
   font-size: 50px;
+  text-align: center;
 }
 
 .qr {
