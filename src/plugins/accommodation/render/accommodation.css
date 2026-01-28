@@ -11,11 +11,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 28px;
-  font-weight: 600;
-  border-bottom: 2px solid #000;
-  padding-bottom: 12px;
+  min-height: 80px;
+  gap: 16px;
 }
+
 
 .middle {
   flex: 1;
@@ -57,20 +56,32 @@
 }
 
 .current-icon {
-  height: auto;
-  max-width: 90%;
-  width: auto;
-  max-height: 100%;
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
+  width: 48px;
+  height: 48px;
   object-fit: contain;
 }
 
-current-temp {
-  font-size: 45cqmin;
-  text-align: center;
-  align-content: end;
-  position: relative;
-  height: 50%;
+.current-temp {
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.time {
+  font-size: 28px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.weather {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.temperature-unit {
+  font-size: 18px;
+  vertical-align: top;
 }
