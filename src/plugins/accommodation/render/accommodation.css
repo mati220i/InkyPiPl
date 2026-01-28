@@ -1,11 +1,12 @@
 .dashboard {
-  display: grid;
+  display: flex;
   grid-template-rows: 20% 1fr 20%;
   height: 100%;
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
   font-family: sans-serif;
   color: #000;
+  outline: 2px dashed red;
 }
 
 .top-row {
@@ -15,17 +16,53 @@
   border-bottom: 2px solid #000;
   padding-bottom: 12px;
   min-height: 100%;
+  width: 100%;
 }
 
 .middle {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 32px;
+  align-items: stretch;
+  gap: 40px;
+}
+
+.bottom {
+  border-top: 2px solid #000;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.time {
+  font-size: 50px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.weather {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.current-icon {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.current-temp {
+  font-size: 50px;
+  line-height: 1;
+}
+
+.temperature-unit {
+  font-size: 18px;
+  vertical-align: top;
 }
 
 .wifi {
-  font-size: 42px;
+  font-size: 60px;
 }
 
 .qr {
@@ -38,45 +75,13 @@
   height: 220px;
 }
 
-.bottom {
-  border-top: 2px solid #000;
-  padding-top: 12px;
-  text-align: center;
-}
-
 .checkout {
-  font-size: 20px;
+  font-size: 40px;
   font-weight: 600;
 }
 
 .relative-day {
-  font-size: 16px;
+  font-size: 40px;
   margin-top: 4px;
 }
 
-.current-icon {
-  width: 56px;
-  height: 56px;
-}
-
-.current-temp {
-  font-size: 44px;
-  line-height: 1;
-}
-
-.time {
-  font-size: 32px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.weather {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.temperature-unit {
-  font-size: 18px;
-  vertical-align: top;
-}
