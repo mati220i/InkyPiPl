@@ -118,7 +118,16 @@ class Accommodation(BasePlugin):
         if device_config.get_config("orientation") == "vertical":
             dimensions = dimensions[::-1]
 
+        countdown_date_str = settings.get('date')
+        countdown_date = datetime.strptime(countdown_date_str, "%Y-%m-%d")
+        countdown_date = tz.localize(countdown_date)
+
+        current_time = datetime.now(tz)
+        day_count = (countdown_date.date() - current_time.date()).days
+        settings['date'] = countdown_date
+
         template_params["plugin_settings"] = settings
+        template_params["relative_day"] = day_count
 
         # Add last refresh time
         now = datetime.now(tz)
