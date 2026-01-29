@@ -124,7 +124,7 @@ class Accommodation(BasePlugin):
 
         current_time = datetime.now(tz)
         day_count = (countdown_date.date() - current_time.date()).days
-        settings['date'] = countdown_date
+        settings['date'] = countdown_date.strftime("%d %B %Y")
 
         template_params["plugin_settings"] = settings
         template_params["relative_day"] = day_count
